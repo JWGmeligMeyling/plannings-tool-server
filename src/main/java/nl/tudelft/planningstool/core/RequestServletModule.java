@@ -39,7 +39,6 @@ public class RequestServletModule extends ServletModule {
         this.bindClassesAnnotatedWithInPackage("nl.tudelft.planningstool.api", Path.class);
         this.bindClassesAnnotatedWithInPackage("nl.tudelft.planningstool.core.mappers", Provider.class);
         this.bindClassesAnnotatedWithInPackage("nl.tudelft.planningstool.api.security", Provider.class);
-//        this.bindClassesAnnotatedWithInPackage("nl.tudelft.planningstool.api.filters", Provider.class);
     }
 
     private void bindClassesAnnotatedWithInPackage(final String packageName,

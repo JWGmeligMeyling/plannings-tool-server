@@ -5,25 +5,19 @@ import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.PreMatching;
-import javax.ws.rs.container.ResourceInfo;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
 
 /**
- * TODO
+ * Filter applied to requests going to endpoints secured with @Secured.
+ * Clients requesting to these endpoints should pass an Authorization HTTP header
+ * with "Bearer token" as content, where token is the auth token given to the user.
  */
 @Secured
 @Provider
-@PreMatching
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
-
-    @Context
-    private ResourceInfo resourceInfo;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -39,19 +33,15 @@ public class AuthenticationFilter implements ContainerRequestFilter {
         // Extract the token from the HTTP Authorization header
         String token = authorizationHeader.substring("Bearer".length()).trim();
 
-        try {
-            // Validate the token
-            System.out.println(requestContext.getSecurityContext().getUserPrincipal().getName());
-            validateToken(token);
-        } catch (Exception e) {
-            requestContext.abortWith(
-                    Response.status(Response.Status.UNAUTHORIZED).build());
-        }
+        // Validate the token
+        validateToken(token);
     }
 
-    private void validateToken(String token) throws Exception{
+    private void validateToken(String token) throws NotAuthorizedException{
         if(!token.equals("AAAA-BBBB-CCCC-DDDD")) {
-            throw new Exception("NOPE");
+            // Token is invalid for all users.
+            // Throw NotAuthorizedException, which passes a 401 HTTP response to the client.
+            throw new NotAuthorizedException("Invalid authorization token for this request.");
         }
     }
 }

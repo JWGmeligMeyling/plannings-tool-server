@@ -1,6 +1,8 @@
 package nl.tudelft.planningstool.api.security;
 
 import javax.annotation.Priority;
+import javax.ws.rs.ForbiddenException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -16,7 +18,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * TODO
+ * Checks the authorization of @Secured endpoints.
+ * If the @Secured tag is given context with roles from {@link nl.tudelft.planningstool.api.security.Role},
+ * The user must have that specific role assigned, else it's denied access anyways.
+ *
+ * Important note: This filter runs AFTER {@link nl.tudelft.planningstool.api.security.AuthenticationFilter}.
  */
 @Secured
 @Provider
@@ -70,7 +76,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
         }
     }
 
-    private void checkPermissions(List<Role> allowedRoles) throws Exception {
+    private void checkPermissions(List<Role> allowedRoles) throws ForbiddenException {
         // FIXME Check if the user contains one of the allowed roles
         // Throw an Exception if the user has not permission to execute the method
         //throw new Exception("DENIED");

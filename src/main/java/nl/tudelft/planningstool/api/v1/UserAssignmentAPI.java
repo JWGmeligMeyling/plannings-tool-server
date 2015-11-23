@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 /**
  * API end-point to provide assignments for an user.
  */
-@Secured
 @Path("v1/users/USER-{userId: (\\d|\\w|-)+}/courses/assignments")
 public class UserAssignmentAPI extends ResponseAPI {
 
@@ -32,10 +31,9 @@ public class UserAssignmentAPI extends ResponseAPI {
      * @param userId The id of the user.
      * @return A list of assigments.
      */
-    @Secured
     @GET
+    @Secured
     public ListResponse<AssignmentResponse> get(@PathParam("userId") String userId) {
-        System.out.println("LET MEEEEEEEE ENTERTAIN YOU");
         long now = System.currentTimeMillis();
 
         User user = this.userDAO.getFromUUID(userId);
