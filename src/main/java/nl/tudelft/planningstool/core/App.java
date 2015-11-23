@@ -29,6 +29,7 @@ public class App {
         final RequestHandler requestHandler = new RequestHandler(this);
 
         final ContextHandlerCollection handlers = new ContextHandlerCollection();
+
         handlers.addContext("/", "/").setHandler(requestHandler);
         return handlers;
     }

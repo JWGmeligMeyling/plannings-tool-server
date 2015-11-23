@@ -9,6 +9,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.Random;
 
 
 /**
@@ -20,6 +23,7 @@ public class AuthenticationAPI {
     @POST
     @Produces("application/json")
     @Consumes("application/json")
+    //unauthorizeexception TODO
     public Response authenticateUser(Credentials credentials) {
         String username = credentials.getUsername();
         String password = credentials.getPassword();
@@ -52,6 +56,9 @@ public class AuthenticationAPI {
 
     private String generateToken(String username) {
         return "AAAA-BBBB-CCCC-DDDD"; //FIXME
+
+//        Random random = new SecureRandom();
+//        return new BigInteger(130, random).toString(32);
     }
 
     private void authenticate(String username, String password) {

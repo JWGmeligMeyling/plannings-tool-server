@@ -3,6 +3,7 @@ package nl.tudelft.planningstool.api.v1;
 import com.google.common.collect.Maps;
 import nl.tudelft.planningstool.api.responses.AssignmentResponse;
 import nl.tudelft.planningstool.api.responses.ListResponse;
+import nl.tudelft.planningstool.api.security.Secured;
 import nl.tudelft.planningstool.database.entities.User;
 import nl.tudelft.planningstool.database.entities.assignments.Assignment;
 import nl.tudelft.planningstool.database.entities.assignments.occurrences.UserOccurrence;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 /**
  * API end-point to provide assignments for an user.
  */
+@Secured
 @Path("v1/users/USER-{userId: (\\d|\\w|-)+}/courses/assignments")
 public class UserAssignmentAPI extends ResponseAPI {
 
@@ -30,8 +32,10 @@ public class UserAssignmentAPI extends ResponseAPI {
      * @param userId The id of the user.
      * @return A list of assigments.
      */
+    @Secured
     @GET
     public ListResponse<AssignmentResponse> get(@PathParam("userId") String userId) {
+        System.out.println("LET MEEEEEEEE ENTERTAIN YOU");
         long now = System.currentTimeMillis();
 
         User user = this.userDAO.getFromUUID(userId);
