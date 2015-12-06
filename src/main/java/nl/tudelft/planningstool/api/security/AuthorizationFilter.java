@@ -25,7 +25,7 @@ import java.util.List;
  *
  * Important note: This filter runs AFTER {@link nl.tudelft.planningstool.api.security.AuthenticationFilter}.
  */
-@Secured
+@AuthenticationFilter.NotSecured
 @Provider
 @Priority(Priorities.AUTHORIZATION)
 public class AuthorizationFilter implements ContainerRequestFilter {

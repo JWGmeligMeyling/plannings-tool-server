@@ -7,6 +7,7 @@ import nl.tudelft.planningstool.database.controllers.UserDAO;
 import nl.tudelft.planningstool.database.entities.User;
 
 import javax.annotation.Priority;
+import javax.ws.rs.NameBinding;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
@@ -14,17 +15,29 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * Filter applied to requests going to endpoints secured with @Secured.
  * Clients requesting to these endpoints should pass an Authorization HTTP header
  * with "Bearer token" as content, where token is the auth token given to the user.
  */
-@Secured
+@AuthenticationFilter.NotSecured
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 @Slf4j
 public class AuthenticationFilter implements ContainerRequestFilter {
+
+    @NameBinding
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.TYPE, ElementType.METHOD})
+    public @interface NotSecured{
+        Role[] value() default {};
+    }
+
 
     private final com.google.inject.Provider<UserDAO> userDAO;
 
